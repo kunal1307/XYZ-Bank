@@ -32,7 +32,7 @@ class LoginControllerTest {
     @Test
     void shouldLoginSuccessfully() throws Exception {
         LoginRequest request = new LoginRequest("kunal123", "Pass123456");
-        LoginResponse response = new LoginResponse("Login successful");
+        LoginResponse response = new LoginResponse("Login successful", "test-token");
 
         when(loginService.login(request)).thenReturn(response);
 

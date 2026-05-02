@@ -10,13 +10,12 @@ public class IbanGenerator {
 
     private static final String COUNTRY_CODE = "NL";
     private static final String BANK_CODE = "RBAN";
-    private static final int ACCOUNT_NUMBER_LENGTH = 10;
 
     private final SecureRandom random = new SecureRandom();
 
     public String generate() {
-        String accountNumber = generateAccountNumber();
 
+        String accountNumber = generateAccountNumber();
 
         String checkDigits = String.format("%02d", random.nextInt(100));
 
@@ -32,13 +31,7 @@ public class IbanGenerator {
         // add 4-digit random to avoid same-millisecond collisions
         int randomPart = random.nextInt(10000);
 
-        // combine into 10 digits
+        // Timestamp + random suffix keeps the number readable and reduces collision risk.
         return String.format("%06d%04d", timePart, randomPart);
-    }
-
-    public static void main(String args[]){
-        IbanGenerator ib = new IbanGenerator();
-
-        System.out.println(ib.generate());
     }
 }

@@ -10,4 +10,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     boolean existsByUsername(String username);
 
     Optional<Customer> findByUsername(String username);
+
+    Optional<Customer> findBySessionToken(String sessionToken);
 }

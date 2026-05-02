@@ -35,6 +35,7 @@ public class RateLimitFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String path = httpRequest.getRequestURI();
 
+        // Swagger makes multiple internal calls, so it is excluded from the API rate limit.
         if (isSwaggerRequest(path)) {
             chain.doFilter(request, response);
             return;

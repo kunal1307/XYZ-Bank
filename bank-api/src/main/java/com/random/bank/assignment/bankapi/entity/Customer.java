@@ -38,4 +38,6 @@ public class Customer {
     private Country country;
 
     private String password;
+
+    private String sessionToken;
 }

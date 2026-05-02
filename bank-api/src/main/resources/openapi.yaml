@@ -64,6 +64,7 @@ paths:
                 $ref: '#/components/schemas/LoginResponse'
               example:
                 message: Login successful
+                token: 550e8400-e29b-41d4-a716-446655440000
         '400':
           description: Invalid username or password
           content:
@@ -74,14 +75,14 @@ paths:
   /overview:
     get:
       summary: Get account overview
-      description: Returns account overview for the given username.
+      description: Returns account overview for the logged-in customer using the Authorization token.
       parameters:
-        - name: username
-          in: query
+        - name: Authorization
+          in: header
           required: true
           schema:
             type: string
-          example: kunal123
+          example: Bearer 550e8400-e29b-41d4-a716-446655440000
       responses:
         '200':
           description: Account overview returned successfully
@@ -95,7 +96,7 @@ paths:
                 balance: 0.00
                 currency: EUR
         '400':
-          description: Missing or invalid username
+          description: Missing or invalid Authorization header
           content:
             application/json:
               schema:
@@ -165,6 +166,9 @@ components:
         message:
           type: string
           example: Login successful
+        token:
+          type: string
+          example: 550e8400-e29b-41d4-a716-446655440000
 
     AccountOverviewResponse:
       type: object

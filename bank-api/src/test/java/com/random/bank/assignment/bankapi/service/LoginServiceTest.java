@@ -39,6 +39,8 @@ class LoginServiceTest {
         LoginResponse response = loginService.login(request);
 
         assertEquals("Login successful", response.message());
+        assertNotNull(response.token());
+        verify(customerRepository).save(customer);
     }
 
     @Test

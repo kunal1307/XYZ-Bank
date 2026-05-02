@@ -15,7 +15,7 @@ public class AccountOverviewController {
     }
 
     @GetMapping
-    public AccountOverviewResponse getOverview(@RequestParam String username) {
-        return accountOverviewService.getOverview(username);
+    public AccountOverviewResponse getOverview(@RequestHeader("Authorization") String authorizationHeader) {
+        return accountOverviewService.getOverview(authorizationHeader);
     }
 }

@@ -34,10 +34,10 @@ class AccountOverviewControllerTest {
                 "EUR"
         );
 
-        when(accountOverviewService.getOverview("kunal123")).thenReturn(response);
+        when(accountOverviewService.getOverview("Bearer test-token")).thenReturn(response);
 
         mockMvc.perform(get("/overview")
-                        .param("username", "kunal123"))
+                        .header("Authorization", "Bearer test-token"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.accountNumber").value("NL93RBAN7353543491"))
                 .andExpect(jsonPath("$.accountType").value("CURRENT"))
@@ -46,7 +46,7 @@ class AccountOverviewControllerTest {
     }
 
     @Test
-    void shouldReturnBadRequestWhenUsernameParamIsMissing() throws Exception {
+    void shouldReturnBadRequestWhenAuthorizationHeaderIsMissing() throws Exception {
         mockMvc.perform(get("/overview"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.status").value(400))

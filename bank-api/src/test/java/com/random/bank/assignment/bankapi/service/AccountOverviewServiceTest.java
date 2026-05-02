@@ -43,13 +43,13 @@ class AccountOverviewServiceTest {
                 .customer(customer)
                 .build();
 
-        when(customerRepository.findByUsername("kunal123"))
+        when(customerRepository.findBySessionToken("test-token"))
                 .thenReturn(Optional.of(customer));
 
         when(accountRepository.findByCustomer(customer))
                 .thenReturn(Optional.of(account));
 
-        AccountOverviewResponse response = accountOverviewService.getOverview("kunal123");
+        AccountOverviewResponse response = accountOverviewService.getOverview("Bearer test-token");
 
         assertEquals("NL93RBAN7353543491", response.accountNumber());
         assertEquals("CURRENT", response.accountType());
@@ -58,26 +58,36 @@ class AccountOverviewServiceTest {
     }
 
     @Test
-    void shouldFailWhenUsernameIsBlank() {
+    void shouldFailWhenAuthorizationHeaderIsMissing() {
         BadRequestException exception = assertThrows(
                 BadRequestException.class,
                 () -> accountOverviewService.getOverview(" ")
         );
 
-        assertEquals("Username is required", exception.getMessage());
+        assertEquals("Authorization header is required", exception.getMessage());
     }
 
     @Test
-    void shouldFailWhenCustomerNotFound() {
-        when(customerRepository.findByUsername("unknown"))
-                .thenReturn(Optional.empty());
-
-        NotFoundException exception = assertThrows(
-                NotFoundException.class,
-                () -> accountOverviewService.getOverview("unknown")
+    void shouldFailWhenAuthorizationHeaderFormatIsInvalid() {
+        BadRequestException exception = assertThrows(
+                BadRequestException.class,
+                () -> accountOverviewService.getOverview("test-token")
         );
 
-        assertEquals("Customer not found", exception.getMessage());
+        assertEquals("Authorization header must start with Bearer", exception.getMessage());
+    }
+
+    @Test
+    void shouldFailWhenTokenIsInvalid() {
+        when(customerRepository.findBySessionToken("invalid-token"))
+                .thenReturn(Optional.empty());
+
+        BadRequestException exception = assertThrows(
+                BadRequestException.class,
+                () -> accountOverviewService.getOverview("Bearer invalid-token")
+        );
+
+        assertEquals("Invalid or expired login token", exception.getMessage());
     }
 
     @Test
@@ -86,7 +96,7 @@ class AccountOverviewServiceTest {
                 .username("kunal123")
                 .build();
 
-        when(customerRepository.findByUsername("kunal123"))
+        when(customerRepository.findBySessionToken("test-token"))
                 .thenReturn(Optional.of(customer));
 
         when(accountRepository.findByCustomer(customer))
@@ -94,7 +104,7 @@ class AccountOverviewServiceTest {
 
         NotFoundException exception = assertThrows(
                 NotFoundException.class,
-                () -> accountOverviewService.getOverview("kunal123")
+                () -> accountOverviewService.getOverview("Bearer test-token")
         );
 
         assertEquals("Account not found", exception.getMessage());
