@@ -1,0 +1,198 @@
+openapi: 3.0.3
+
+info:
+  title: Bank API
+  version: 1.0.0
+  description: REST APIs for customer registration, login and account overview.
+
+servers:
+  - url: http://localhost:8080
+
+paths:
+  /register:
+    post:
+      summary: Register a new customer
+      description: Registers a customer and creates a default current account.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+            example:
+              name: Kunal
+              address: Amsterdam
+              username: kunal123
+              dateOfBirth: 1998-05-10
+              country: NL
+      responses:
+        '201':
+          description: Customer registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponse'
+              example:
+                username: kunal123
+                password: A7xP92LmQ0
+        '400':
+          description: Invalid registration request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /login:
+    post:
+      summary: Login customer
+      description: Logs in a customer using username and generated password.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+            example:
+              username: kunal123
+              password: A7xP92LmQ0
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+              example:
+                message: Login successful
+        '400':
+          description: Invalid username or password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /overview:
+    get:
+      summary: Get account overview
+      description: Returns account overview for the given username.
+      parameters:
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+          example: kunal123
+      responses:
+        '200':
+          description: Account overview returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountOverviewResponse'
+              example:
+                accountNumber: NL09RBAN1234567890
+                accountType: CURRENT
+                balance: 0.00
+                currency: EUR
+        '400':
+          description: Missing or invalid username
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Customer or account not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    RegisterRequest:
+      type: object
+      required:
+        - name
+        - address
+        - username
+        - dateOfBirth
+        - country
+      properties:
+        name:
+          type: string
+          example: Kunal
+        address:
+          type: string
+          example: Amsterdam
+        username:
+          type: string
+          example: kunal123
+        dateOfBirth:
+          type: string
+          format: date
+          example: 1998-05-10
+        country:
+          type: string
+          description: Allowed values are NL and BE.
+          example: NL
+
+    RegisterResponse:
+      type: object
+      properties:
+        username:
+          type: string
+          example: kunal123
+        password:
+          type: string
+          example: A7xP92LmQ0
+
+    LoginRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          example: kunal123
+        password:
+          type: string
+          example: A7xP92LmQ0
+
+    LoginResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Login successful
+
+    AccountOverviewResponse:
+      type: object
+      properties:
+        accountNumber:
+          type: string
+          example: NL09RBAN1234567890
+        accountType:
+          type: string
+          example: CURRENT
+        balance:
+          type: number
+          format: decimal
+          example: 0.00
+        currency:
+          type: string
+          example: EUR
+
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          example: 2026-05-02T14:30:00
+        status:
+          type: integer
+          example: 400
+        message:
+          type: string
+          example: Username already exists
