@@ -1,55 +1,17 @@
 {
   "info": {
+    "_postman_id": "1703efb9-abcf-4a88-87c9-6514e606fd48",
     "name": "Bank API - Assignment",
     "description": "Postman collection covering registration, login, token-based account overview, and failure scenarios.",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "41969062"
   },
-  "variable": [
-    {
-      "key": "baseUrl",
-      "value": "http://localhost:8080"
-    },
-    {
-      "key": "username",
-      "value": "kunal123"
-    },
-    {
-      "key": "password",
-      "value": ""
-    },
-    {
-      "key": "token",
-      "value": ""
-    }
-  ],
   "item": [
     {
       "name": "Registration",
       "item": [
         {
           "name": "Register customer - success",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/register",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "register"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Kunal\",\n  \"address\": \"Amsterdam\",\n  \"username\": \"{{username}}\",\n  \"dateOfBirth\": \"1998-05-10\",\n  \"country\": \"NL\"\n}"
-            }
-          },
           "event": [
             {
               "listen": "test",
@@ -68,10 +30,7 @@
                 ]
               }
             }
-          ]
-        },
-        {
-          "name": "Register customer - duplicate username",
+          ],
           "request": {
             "method": "POST",
             "header": [
@@ -80,6 +39,10 @@
                 "value": "application/json"
               }
             ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Kunal\",\n  \"address\": \"Amsterdam\",\n  \"username\": \"{{username}}\",\n  \"dateOfBirth\": \"1998-05-10\",\n  \"country\": \"NL\"\n}"
+            },
             "url": {
               "raw": "{{baseUrl}}/register",
               "host": [
@@ -88,12 +51,12 @@
               "path": [
                 "register"
               ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Kunal\",\n  \"address\": \"Amsterdam\",\n  \"username\": \"{{username}}\",\n  \"dateOfBirth\": \"1998-05-10\",\n  \"country\": \"NL\"\n}"
             }
           },
+          "response": []
+        },
+        {
+          "name": "Register customer - duplicate username",
           "event": [
             {
               "listen": "test",
@@ -109,10 +72,46 @@
                 ]
               }
             }
-          ]
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Kunal\",\n  \"address\": \"Amsterdam\",\n  \"username\": \"{{username}}\",\n  \"dateOfBirth\": \"1998-05-10\",\n  \"country\": \"NL\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "register"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Register customer - under 18",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "request": {
             "method": "POST",
             "header": [
@@ -121,36 +120,37 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}/register",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "register"
-              ]
-            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"name\": \"Young User\",\n  \"address\": \"Amsterdam\",\n  \"username\": \"younguser1\",\n  \"dateOfBirth\": \"2010-01-01\",\n  \"country\": \"NL\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "register"
+              ]
             }
           },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code is 400', function () {",
-                  "    pm.response.to.have.status(400);",
-                  "});"
-                ]
-              }
-            }
-          ]
+          "response": []
         },
         {
           "name": "Register customer - country not allowed",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "request": {
             "method": "POST",
             "header": [
@@ -159,44 +159,10 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}/register",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "register"
-              ]
-            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"name\": \"John\",\n  \"address\": \"London\",\n  \"username\": \"johnuk1\",\n  \"dateOfBirth\": \"1995-01-01\",\n  \"country\": \"UK\"\n}"
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code is 400', function () {",
-                  "    pm.response.to.have.status(400);",
-                  "});"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "Register customer - missing name",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            },
             "url": {
               "raw": "{{baseUrl}}/register",
               "host": [
@@ -205,12 +171,12 @@
               "path": [
                 "register"
               ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"address\": \"Amsterdam\",\n  \"username\": \"missingname1\",\n  \"dateOfBirth\": \"1998-05-10\",\n  \"country\": \"NL\"\n}"
             }
           },
+          "response": []
+        },
+        {
+          "name": "Register customer - missing name",
           "event": [
             {
               "listen": "test",
@@ -223,7 +189,30 @@
                 ]
               }
             }
-          ]
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"address\": \"Amsterdam\",\n  \"username\": \"missingname1\",\n  \"dateOfBirth\": \"1998-05-10\",\n  \"country\": \"NL\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "register"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -232,28 +221,6 @@
       "item": [
         {
           "name": "Login - success",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/login",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "login"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}"
-            }
-          },
           "event": [
             {
               "listen": "test",
@@ -272,10 +239,46 @@
                 ]
               }
             }
-          ]
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "login"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Login - wrong password",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "request": {
             "method": "POST",
             "header": [
@@ -284,44 +287,10 @@
                 "value": "application/json"
               }
             ],
-            "url": {
-              "raw": "{{baseUrl}}/login",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "login"
-              ]
-            },
             "body": {
               "mode": "raw",
               "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"wrong-password\"\n}"
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test('Status code is 400', function () {",
-                  "    pm.response.to.have.status(400);",
-                  "});"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "Login - missing password",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            },
             "url": {
               "raw": "{{baseUrl}}/login",
               "host": [
@@ -330,12 +299,12 @@
               "path": [
                 "login"
               ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"username\": \"{{username}}\"\n}"
             }
           },
+          "response": []
+        },
+        {
+          "name": "Login - missing password",
           "event": [
             {
               "listen": "test",
@@ -348,7 +317,30 @@
                 ]
               }
             }
-          ]
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{username}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "login"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -357,24 +349,6 @@
       "item": [
         {
           "name": "Overview - success with token",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/overview",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "overview"
-              ]
-            }
-          },
           "event": [
             {
               "listen": "test",
@@ -393,10 +367,42 @@
                 ]
               }
             }
-          ]
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/overview",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "overview"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Overview - missing Authorization header",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});"
+                ]
+              }
+            }
+          ],
           "request": {
             "method": "GET",
             "header": [],
@@ -410,6 +416,10 @@
               ]
             }
           },
+          "response": []
+        },
+        {
+          "name": "Overview - invalid token format",
           "event": [
             {
               "listen": "test",
@@ -422,10 +432,7 @@
                 ]
               }
             }
-          ]
-        },
-        {
-          "name": "Overview - invalid token format",
+          ],
           "request": {
             "method": "GET",
             "header": [
@@ -444,6 +451,10 @@
               ]
             }
           },
+          "response": []
+        },
+        {
+          "name": "Overview - invalid token",
           "event": [
             {
               "listen": "test",
@@ -456,10 +467,7 @@
                 ]
               }
             }
-          ]
-        },
-        {
-          "name": "Overview - invalid token",
+          ],
           "request": {
             "method": "GET",
             "header": [
@@ -478,21 +486,72 @@
               ]
             }
           },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Rate Limiting",
+      "item": [
+        {
+          "name": "Rate limit check",
           "event": [
             {
               "listen": "test",
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('Status code is 400', function () {",
-                  "    pm.response.to.have.status(400);",
-                  "});"
+                  "pm.test('Response is either normal or rate-limited', function () {",
+                  "  pm.expect([200, 429]).to.include(pm.response.code);",
+                  "});",
+                  "if (pm.response.code === 429) {",
+                  "  pm.test('Rate limit message exists', function () {",
+                  "    pm.expect(pm.response.json().message).to.include('Too many requests');",
+                  "  });",
+                  "}"
                 ]
               }
             }
-          ]
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/overview",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "overview"
+              ]
+            }
+          },
+          "response": []
         }
       ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "username",
+      "value": "kunal123"
+    },
+    {
+      "key": "password",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "value": ""
     }
   ]
 }

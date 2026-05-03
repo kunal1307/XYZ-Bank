@@ -295,6 +295,7 @@ Run tests:
 Includes:
 - Service layer tests (business logic)
 - Controller tests (API behavior)
+- Rate Limiting test
 
 To view the HTML test report, open in browser:
 `target/reports/surefire.html`
@@ -303,10 +304,25 @@ To view the HTML test report, open in browser:
 
 ## Postman collection
 
-A Postman collection is included to test all APIs, including success and error scenarios.
+A Postman collection is included to test all APIs, including success, error, and rate limiting scenarios.
 
 Import the collection:
-[Attached Postman Collection](Bank-API-postman-collection.json)
+[Attached Postman Collection](BankAPI-Assignment-postman-collection.json)
+
+### Rate Limiting
+
+To validate rate limiting:
+
+1. Open the collection in Postman
+2. Click **Run** (Collection Runner)
+3. Configure:
+    - Iterations: `5`
+    - Delay: `0 ms`
+4. Execute the run
+
+Expected behavior:
+- Initial requests return normal responses (200)
+- Subsequent requests return `429 Too Many Requests`
 
 ---
 
